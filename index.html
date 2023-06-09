@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>時間計算ツール</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div id="inputArea">
+      <h1>時間計算ツール</h1>
+      <input type="file" id="fileInput" accept=".txt">
+      <button id="addRow">行を追加</button>
+      <table id="inputTable">
+          <tr>
+              <th>名前</th>
+              <th>所定内時間(h)</th>
+              <th>時間外時間(h)</th>
+              <th>所定内/時間外時間(m)</th>
+          </tr>
+      </table>
+      <button id="calculate">計算</button>
+  </div>
+      <h2>結果</h2>
+      <textarea id="output" readonly></textarea>
+      <button id="clear">クリア</button>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
