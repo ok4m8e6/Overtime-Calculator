@@ -92,3 +92,17 @@ function downloadCSV(csv) {
   link.click();
   document.body.removeChild(link);
 }
+function addRow(name) {
+  var table = document.getElementById("inputTable");
+  var row = table.insertRow(-1);
+  row.insertCell(0).innerHTML =
+    '<input type="text" class="name" value="' + name + '">';
+  row.insertCell(1).innerHTML = '<input type="number" class="totalHours">';
+  row.insertCell(2).innerHTML = '<input type="number" class="minutes">';
+  var deleteButton = document.createElement("button");
+  deleteButton.textContent = "削除";
+  deleteButton.addEventListener("click", function () {
+    table.deleteRow(row.rowIndex);
+  });
+  row.insertCell(3).appendChild(deleteButton);
+}
