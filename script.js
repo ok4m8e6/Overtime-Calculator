@@ -33,19 +33,6 @@ document.getElementById("calculate").addEventListener("click", function () {
   document.getElementById("output").value = output;
   downloadCSV(output);
 });
-
-function downloadCSV(csv) {
-  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  var link = document.createElement("a");
-  var url = URL.createObjectURL(blob);
-  link.setAttribute("href", url);
-  link.setAttribute("download", "output.csv");
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
 function downloadCSV(csv) {
   var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   var link = document.createElement("a");
