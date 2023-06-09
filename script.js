@@ -12,22 +12,6 @@ document.getElementById("calculate").addEventListener("click", function () {
   var regularHours = document.getElementsByClassName("regularHours");
   var overtimeHours = document.getElementsByClassName("overtimeHours");
   var minutes = document.getElementsByClassName("minutes");
-  var output = "名前,計算結果\n";
-  for (var i = 0; i < names.length; i++) {
-    var totalHours =
-      parseFloat(regularHours[i].value) + parseFloat(overtimeHours[i].value);
-    var totalMinutes = parseFloat(minutes[i].value);
-    var result = Math.round(totalHours * 50 + totalMinutes * 0.8333);
-    output += names[i].value + "," + result + "\n";
-  }
-  document.getElementById("output").value = output;
-});
-
-document.getElementById("calculate").addEventListener("click", function () {
-  var names = document.getElementsByClassName("name");
-  var regularHours = document.getElementsByClassName("regularHours");
-  var overtimeHours = document.getElementsByClassName("overtimeHours");
-  var minutes = document.getElementsByClassName("minutes");
   var output = "名前,所定内時間(h),時間外時間(h),所定内/時間外時間(m),手当\n";
   for (var i = 0; i < names.length; i++) {
     var totalHours =
@@ -46,6 +30,7 @@ document.getElementById("calculate").addEventListener("click", function () {
       result +
       "\n";
   }
+  document.getElementById("output").value = output;
   downloadCSV(output);
 });
 
