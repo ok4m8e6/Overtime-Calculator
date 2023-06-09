@@ -1,58 +1,3 @@
-document.getElementById("addRow").addEventListener("click", function () {
-  var table = document.getElementById("inputTable");
-  var row = table.insertRow(-1);
-  row.insertCell(0).innerHTML = '<input type="text" class="name">';
-  row.insertCell(1).innerHTML = '<input type="number" class="regularHours">';
-  row.insertCell(2).innerHTML = '<input type="number" class="overtimeHours">';
-  row.insertCell(3).innerHTML = '<input type="number" class="minutes">';
-});
-
-document.getElementById("calculate").addEventListener("click", function () {
-  var names = document.getElementsByClassName("name");
-  var regularHours = document.getElementsByClassName("regularHours");
-  var overtimeHours = document.getElementsByClassName("overtimeHours");
-  var minutes = document.getElementsByClassName("minutes");
-  var output = "名前,所定内時間(h),時間外時間(h),所定内/時間外時間(m),手当\n";
-  for (var i = 0; i < names.length; i++) {
-    var totalHours =
-      parseFloat(regularHours[i].value) + parseFloat(overtimeHours[i].value);
-    var totalMinutes = parseFloat(minutes[i].value);
-    var result = Math.round(totalHours * 50 + totalMinutes * 0.8333);
-    output +=
-      names[i].value +
-      "," +
-      regularHours[i].value +
-      "," +
-      overtimeHours[i].value +
-      "," +
-      minutes[i].value +
-      "," +
-      result +
-      "\n";
-  }
-  document.getElementById("output").value = output;
-  downloadCSV(output);
-});
-function downloadCSV(csv) {
-  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  var link = document.createElement("a");
-  var url = URL.createObjectURL(blob);
-  link.setAttribute("href", url);
-  link.setAttribute("download", "output.csv");
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-document.getElementById("clear").addEventListener("click", function () {
-  document.getElementById("output").value = "";
-
-  var table = document.getElementById("inputTable");
-
-  while (table.rows.length > 1) {
-    table.deleteRow(1);
-  }
-});
 document.getElementById("fileInput").addEventListener("change", function (e) {
   var file = e.target.files[0];
   if (!file) {
@@ -69,12 +14,81 @@ document.getElementById("fileInput").addEventListener("change", function (e) {
   reader.readAsText(file);
 });
 
+document.getElementById("addRow").addEventListener("click", function () {
+  addRow("");
+});
+
 function addRow(name) {
   var table = document.getElementById("inputTable");
   var row = table.insertRow(-1);
   row.insertCell(0).innerHTML =
     '<input type="text" class="name" value="' + name + '">';
-  row.insertCell(1).innerHTML = '<input type="number" class="regularHours">';
-  row.insertCell(2).innerHTML = '<input type="number" class="overtimeHours">';
-  row.insertCell(3).innerHTML = '<input type="number" class="minutes">';
+  row.insertCell(1).innerHTML = '<input type="number" class="totalHours">';
+  row.insertCell(2).innerHTML = '<input type="number" class="minutes">';
+}
+
+document.getElementById("calculate").addEventListener("click", function () {
+  var names = document.getElementsByClassName("name");
+  var totalHours = document.getElementsByClassName("totalHours");
+  var minutes = document.getElementsByClassName("minutes");
+  var output = "名前,所定内時間+時間外時間(h),所定内/時間外時間(m),手当\n";
+  for (var i = 0; i < names.length; i++) {
+    var hours = parseFloat(totalHours[i].value);
+    var mins = parseFloat(minutes[i].value);
+    var result = Math.round(hours * 50 + mins * 0.8333);
+    output +=
+      names[i].value +
+      "," +
+      totalHours[i].value +
+      "," +
+      minutes[i].value +
+      "," +
+      result +
+      "\n";
+  }
+  document.getElementById("output").value = output;
+});
+
+document.getElementById("clear").addEventListener("click", function () {
+  document.getElementById("output").value = "";
+
+  var table = document.getElementById("inputTable");
+
+  while (table.rows.length > 1) {
+    table.deleteRow(1);
+  }
+  document.getElementById("fileInput").value = "";
+});
+document.getElementById("downloadCSV").addEventListener("click", function () {
+  var names = document.getElementsByClassName("name");
+  var totalHours = document.getElementsByClassName("totalHours");
+  var minutes = document.getElementsByClassName("minutes");
+  var output = "名前,所定内時間+時間外時間(h),所定内/時間外時間(m),手当\n";
+  for (var i = 0; i < names.length; i++) {
+    var hours = parseFloat(totalHours[i].value);
+    var mins = parseFloat(minutes[i].value);
+    var result = Math.round(hours * 50 + mins * 0.8333);
+    output +=
+      names[i].value +
+      "," +
+      totalHours[i].value +
+      "," +
+      minutes[i].value +
+      "," +
+      result +
+      "\n";
+  }
+  downloadCSV(output);
+});
+
+function downloadCSV(csv) {
+  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  var link = document.createElement("a");
+  var url = URL.createObjectURL(blob);
+  link.setAttribute("href", url);
+  link.setAttribute("download", "output.csv");
+  link.style.visibility = "hidden";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
